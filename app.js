@@ -9,16 +9,25 @@ const readline = require('readline')
 //   output: process.stdout
 // })
 
-// rl.question('Specify path for dat creation: ', (path) => {
-//   Dat(path, function (err, dat) {
-//     if (err) throw err
-//     dat.importFiles()
-//     dat.joinNetwork()
-//     console.log('My Dat link is: dat://', dat.key.toString('hex'))
-//     console.log(`Initiated DAT in file location: ${path}`);
-//   })
-//   rl.close();
-// });
+rl.question('Specify path for dat creation: ', (path) => {
+  Dat(path, function (err, dat) {
+    if (err) throw err
+    try {
+      dat.importFiles(function (err) {
+        if (err) {
+          console.log(err)
+          console.log('most likely already have a dat stream initiated')
+        }
+      })
+      dat.joinNetwork()
+      console.log('My Dat link is: dat://', dat.key.toString('hex'))
+      console.log(`Initiated DAT in file location: ${path}`)
+    } catch {
+      console.log('Are you sure you ahvent already created a dat stream here?')
+    }
+  })
+  rl.close()
+})
 
 
 //read file
